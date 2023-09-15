@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redis Person Entity Test</title>
+    <script>
+        async function createPerson() {
+            let person = {
+                id: document.getElementById('id').value,
+                firstName: document.getElementById('firstName').value,
+                lastName: document.getElementById('lastName').value,
+                age: parseInt(document.getElementById('age').value)
+            };
+
+            let response = await fetch('/persons', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(person)
+            });
+
+            let result = await response.json();
+            document.getElementById('output').innerHTML = JSON.stringify(result, null, 2);
+        }
+
+        async function getPerson() {
+            let id = document.getElementById('getId').value;
+
+            let response = await fetch('/persons/' + id, {
+                method: 'GET'
+            });
+
+            let result = await response.json();
+            document.getElementById('output').innerHTML = JSON.stringify(result, null, 2);
+        }
+
+        async function getAllPersons() {
+            let response = await fetch('/persons', {
+                method: 'GET'
+            });
+
+            let result = await response.json();
+            document.getElementById('output').innerHTML = JSON.stringify(result, null, 2);
+        }
+    </script>
+</head>
+<body>
+
+<h1>Person Entity Test</h1>
+
+<h2>Create Person</h2>
+<div>
+    ID: <input type="text" id="id"><br>
+    First Name: <input type="text" id="firstName"><br>
+    Last Name: <input type="text" id="lastName"><br>
+    Age: <input type="text" id="age"><br>
+    <button onclick="createPerson()">Create</button>
+</div>
+
+<h2>Get Person</h2>
+<div>
+    ID: <input type="text" id="getId"><br>
+    <button onclick="getPerson()">Get</button>
+</div>
+
+<h2>Get All Persons</h2>
+<div>
+    <button onclick="getAllPersons()">Get All</button>
+</div>
+
+<h2>Output</h2>
+<pre id="output"></pre>
+
+</body>
+</html>
